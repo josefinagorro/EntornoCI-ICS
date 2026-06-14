@@ -1,0 +1,44 @@
+openapi: 3.0.3
+info:
+  title: Concert Ticket Calculator API
+  version: 1.0.0
+  description: API demo for CI/CD using TypeScript, Express, Jest and GitHub Actions.
+
+paths:
+  /health:
+    get:
+      summary: Check API status
+      responses:
+        "200":
+          description: API is running
+
+  /tickets/calculate:
+    post:
+      summary: Calculate concert ticket price
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - artist
+                - ticketType
+                - quantity
+              properties:
+                artist:
+                  type: string
+                  example: Harry Styles
+                ticketType:
+                  type: string
+                  enum: [GENERAL, CAMPO, VIP]
+                  example: VIP
+                quantity:
+                  type: integer
+                  minimum: 1
+                  example: 2
+      responses:
+        "200":
+          description: Ticket price calculated successfully
+        "400":
+          description: Invalid input data
