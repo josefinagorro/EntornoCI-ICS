@@ -7,6 +7,29 @@ on:
     branches: [main]
 
 jobs:
+
+  validate-sdd:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Spec Kit artifacts
+        run: |
+          test -f .specify/memory/constitution.md
+          test -f openapi.yaml
+
+          for dir in specs/*; do
+            if [ -d "$dir" ]; then
+              test -f "$dir/spec.md"
+              test -f "$dir/plan.md"
+              test -f "$dir/tasks.md"
+              echo "Validated SDD artifacts in $dir"
+            fi
+          done
+
+          echo "All SDD artifacts validated successfully."
+  
   build-and-test:
     runs-on: ubuntu-latest
 
