@@ -3,7 +3,7 @@ export type TicketType = "GENERAL" | "CAMPO" | "VIP";
 const ticketPrices: Record<TicketType, number> = {
   GENERAL: 50000,
   CAMPO: 80000,
-  VIP: 1,
+  VIP: 120000,
 };
 
 export function calculateTicketPrice(
