@@ -1,10 +1,16 @@
 import express from "express";
+import path from "path";
 import { calculateTicketPrice, TicketType } from "./ticketCalculator";
 
 export const app = express();
 
 app.use(express.json());
-app.use(express.static("public"));
+
+app.use(express.static(path.join(process.cwd(), "public")));
+
+app.get("/", (_req, res) => {
+  res.sendFile(path.join(process.cwd(), "public", "index.html"));
+});
 
 app.get("/health", (_req, res) => {
   res.json({ status: "ok" });
