@@ -47,9 +47,27 @@ jobs:
       - name: Run automated tests
         run: npm test
 
+  e2e:
+    runs-on: ubuntu-latest
+    needs: [test]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run e2e tests
+        run: npm run test:e2e
+
   build:
     runs-on: ubuntu-latest
-    needs: [validate-sdd, test]
+    needs: [validate-sdd, test, e2e]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -83,7 +101,7 @@ jobs:
 
   send-feedback-email:
     runs-on: ubuntu-latest
-    needs: [validate-sdd, test, build, deploy]
+    needs: [validate-sdd, test, e2e, build, deploy]
     if: always()
 
     steps:
@@ -102,6 +120,7 @@ jobs:
 
             SDD validation: ${{ needs.validate-sdd.result }}
             Automated tests: ${{ needs.test.result }}
+            E2E tests: ${{ needs.e2e.result }}
             Build: ${{ needs.build.result }}
             Deploy: ${{ needs.deploy.result }}
 
@@ -115,6 +134,7 @@ jobs:
             Explanation:
             - If SDD validation failed, required specification artifacts are missing.
             - If automated tests failed, at least one test did not pass.
+            - If E2E tests failed, the application flow did not work correctly through HTTP.
             - If build failed, the project could not be compiled/prepared correctly.
             - If deploy failed, the application was not published to Vercel. Review the deploy logs and Vercel configuration.
             - If all jobs are success, the integration passed correctly and the application was deployed successfully.
