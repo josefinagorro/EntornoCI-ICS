@@ -2,7 +2,7 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [main, feature/ci-pipeline]
+    branches: [main, feature/ci-pipeline, feature/spec-kit]
   pull_request:
     branches: [main]
 
@@ -27,3 +27,28 @@ jobs:
 
       - name: Build project
         run: npm run build
+
+      - name: Send CI feedback email
+        if: always()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.SMTP_HOST }}
+          server_port: ${{ secrets.SMTP_PORT }}
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: "[CI] ${{ github.repository }} - ${{ job.status }} on ${{ github.ref_name }}"
+          to: ${{ secrets.EMAIL_TO }}
+          from: ${{ secrets.EMAIL_FROM }}
+          body: |
+            CI integration result: ${{ job.status }}
+
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+
+            Workflow run:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            Explanation:
+            If the result is success, dependencies, automated tests, and TypeScript build completed successfully.
+            If the result is failure, at least one required integration step failed. Review the workflow run link above.
