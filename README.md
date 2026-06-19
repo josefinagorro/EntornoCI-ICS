@@ -6,7 +6,7 @@ El objetivo del trabajo fue aplicar conceptos de **CI/CD** en un proyecto simple
 
 ## Sobre el proyecto
 
-La aplicacion es una calculadora de entradas para conciertos. Permite ingresar un artista, elegir el tipo de entrada y calcular el precio total segun la cantidad seleccionada.
+La aplicacion es una calculadora de entradas para conciertos. Permite elegir el tipo de entrada y calcular el precio total segun la cantidad seleccionada.
 
 El proyecto incluye:
 
@@ -23,7 +23,6 @@ El proyecto incluye:
 - Express
 - TypeScript
 - Jest
-- Supertest
 - GitHub Actions
 - Vercel
 
@@ -70,22 +69,6 @@ El flujo automatiza:
 - Despliegue en Vercel.
 - Envio de feedback por email con el resultado del pipeline.
 
-## API principal
+## Deploy
 
-```http
-POST /tickets/calculate
-```
-
-Ejemplo:
-
-```json
-{
-  "artist": "Harry Styles",
-  "ticketType": "VIP",
-  "quantity": 2
-}
-```
-
-## Autora
-
-Josefina Gorro
+https://ci-demo-ics.vercel.app/
