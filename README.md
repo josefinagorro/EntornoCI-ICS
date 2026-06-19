@@ -1,4 +1,4 @@
-# EntornoCI/CD
+# Entorno CI/CD
 
 Proyecto realizado para el **2do parcial** de la materia **Ingenieria y Calidad de Software**, de **4to ano de Ingenieria en Sistemas**.
 
